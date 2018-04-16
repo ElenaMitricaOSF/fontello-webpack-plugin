@@ -31,7 +31,7 @@
     "form-data": "^2.1.2",
     "https-proxy-agent": "^2.1.1",
     "lodash": "^4.17.4",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "2.1.2",
     "unzip": "^0.1.11",
     "webpack-sources": "^0.2.0"
   },
