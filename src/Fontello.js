@@ -1,7 +1,7 @@
 const _ = require("lodash")
 const path = require("path")
 const stream = require("stream")
-const unzip = require("unzip")
+const unzipper = require("unzipper")
 const fetch = require("node-fetch")
 const FormData = require("form-data")
 const { RawSource } = require("webpack-sources")
@@ -67,15 +67,17 @@ class Fontello {
 	 */
 	fonts() {
 		const { host, fonts } = this.options;
+
 		return this.session()
 			.then(session => fetch(`${host}/${session}/get`))
 			.then(response => {
-				if(!response.ok) {
+                if(!response.ok) {
 					throw new Error(response.statusText)
 				}
 				return new Promise((resolve, reject) => {
 					const assets = {}
-					response.body.pipe(unzip.Parse())
+
+					response.body.pipe(unzipper.Parse())
 						.on("entry", entry => {
 							const ext = path.extname(entry.path).slice(1)
 							if(entry.type === "File" && _.includes(fonts, ext)) {
