@@ -1,6 +1,6 @@
 {
   "name": "fontello-webpack-plugin-new",
-  "version": "0.4.9",
+  "version": "0.5.0",
   "description": "Fontello Webpack plugin",
   "main": "src/index.js",
   "author": "Gabriela Seabra. Modify: Kolevatykh Ilya",
