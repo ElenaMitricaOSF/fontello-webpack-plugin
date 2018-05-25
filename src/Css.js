@@ -39,117 +39,117 @@ const ICON_CSS = ({ className, code }) => `
 
 /**
  * Css source
- * 
+ *
  * @class Css
  */
 class Css {
-	/**
-	 * @param {Object} options.config
-	 * @param {Array} options.fonts       - Font types
-	 * @param {String=} options.className - Base class name
-	 * @param {Function} fontUrl 
-	 */
-	constructor({ config, fonts, className }, fontUrl) {
-		this.options = {
-			glyphs: config.glyphs,
-			prefix: config.css_prefix_text,
-			isSuffix: config.css_use_suffix,
-			fontFamily: config.name || "Icons",
-			fonts,
-			className
-		}
-		this.fontUrl = fontUrl;
-	}
+  /**
+   * @param {Object} options.config
+   * @param {Array} options.fonts       - Font types
+   * @param {String=} options.className - Base class name
+   * @param {Function} fontUrl
+   */
+  constructor({ config, fonts, className }, fontUrl) {
+    this.options = {
+      glyphs:     config.glyphs,
+      prefix:     config.css_prefix_text,
+      isSuffix:   config.css_use_suffix,
+      fontFamily: config.name || "Icons",
+      fonts,
+      className
+    }
+    this.fontUrl = fontUrl;
+  }
 
-	/**
-	 * @param {String} name 
-	 * @returns {String}
-	 */
-	glyphClassName(name) {
-		if(this.options.isSufix) {
-			return name + this.options.prefix;
-		} else {
-			return this.options.prefix + name;
-		}
-	}
+  /**
+   * @param {String} name
+   * @returns {String}
+   */
+  glyphClassName(name) {
+    if (this.options.isSufix) {
+      return name + this.options.prefix;
+    } else {
+      return this.options.prefix + name;
+    }
+  }
 
-	/**
-	 * Typeface src entries
-	 * 
-	 * @returns {String[]}
-	 * @readonly
-	 */
-	get sources() {
-		const src = [];
-		for(const ext in FontTypes) {
-			const format = FontTypes[ext];
-			if(_.includes(this.options.fonts, ext)) {
-				src.push(FONT_SRC(this.fontUrl(ext), format));
-			}
-		}
+  /**
+   * Typeface src entries
+   *
+   * @returns {String[]}
+   * @readonly
+   */
+  get sources() {
+    const src = [];
+    for (const ext in FontTypes) {
+      const format = FontTypes[ext];
+      if (_.includes(this.options.fonts, ext)) {
+        src.push(FONT_SRC(this.fontUrl(ext), format));
+      }
+    }
 
-		return src;
-	}
+    return src;
+  }
 
-	/**
-	 * Css selectors applicable to all icons
-	 * 
-	 * @returns {String[]}
-	 * @readonly
-	 */
-	get genericSelectors() {
-		const { className, prefix, isSuffix } = this.options;
-		const selector = [];
-		if(className) {
-			selector.push(`.${className}::before`);
-		}
-		if(prefix) {
-			if(isSuffix) {
-				selector.push(`[class$="${prefix}"]::before`);
-				selector.push(`[class*="${prefix} "]::before`);
-			} else {
-				selector.push(`[class^="${prefix}"]::before`);
-				selector.push(`[class*=" ${prefix}"]::before`);
-			}
-		}
+  /**
+   * Css selectors applicable to all icons
+   *
+   * @returns {String[]}
+   * @readonly
+   */
+  get genericSelectors() {
+    const { className, prefix, isSuffix } = this.options;
+    const selector = [];
+    if (className) {
+      selector.push(`.${className}::before`);
+    }
+    if (prefix) {
+      if (isSuffix) {
+        selector.push(`[class$="${prefix}"]::before`);
+        selector.push(`[class*="${prefix} "]::before`);
+      } else {
+        selector.push(`[class^="${prefix}"]::before`);
+        selector.push(`[class*=" ${prefix}"]::before`);
+      }
+    }
 
-		return selector;
-	}
+    return selector;
+  }
 
-	/**
-	 * @returns {String}
-	 * @readonly
-	 */
-	get cssText() {
-		const { fontFamily, fonts, glyphs } = this.options;
-		return [
-			FONT_FACE_CSS({
-				source: _.includes(fonts, "eot") ? FONT_SRC(this.fontUrl("eot")) : undefined,
-				sources: this.sources,
-				fontFamily
-			}),
-			GENERIC_CSS({
-				selectors: this.genericSelectors,
-				fontFamily
-			}),
-			glyphs.map(({ code, css }) =>
-				ICON_CSS({
-					className: this.glyphClassName(css),
-					code
-				})
-			).join("")
-		].join("").trim() + "\n";
-	}
+  /**
+   * @returns {String}
+   * @readonly
+   */
+  get cssText() {
+    const { fontFamily, fonts, glyphs } = this.options;
+    return [
+      FONT_FACE_CSS({
+        source:  _.includes(fonts, "eot") ? FONT_SRC(this.fontUrl("eot")) : undefined,
+        sources: this.sources,
+        fontFamily
+      }),
+      GENERIC_CSS({
+        selectors: this.genericSelectors,
+        fontFamily
+      }),
+      glyphs.map(({ code, css }) =>
+        ICON_CSS({
+          className: this.glyphClassName(css),
+          code
+        })
+      ).join("")
+    ].join("").trim() + "\n";
+  }
 
-	map() { return null }
+  map() { return null }
 
-	size() {
-		return Buffer.byteLength(this.source(), "utf8");
-	}
+  size() {
+    return Buffer.byteLength(this.source(), "utf8");
+  }
 
-	source() {
-		return this.cssText;
-	}
+  source() {
+    return this.cssText;
+  }
 }
 
 module.exports = Css;
