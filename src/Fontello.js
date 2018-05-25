@@ -5,7 +5,7 @@ const unzipper = require("unzipper")
 const fetch = require("node-fetch")
 const FormData = require("form-data")
 const { RawSource } = require("webpack-sources")
-const HttpsProxyAgent = require('https-proxy-agenta')
+const HttpsProxyAgent = require('https-proxy-agent')
 
 const defaults = {
   host:  "http://fontello.com",
