@@ -12,7 +12,7 @@ const defaults = {
   proxy: null
 }
 
-const REQUEST_TIMEOUT = 3000;
+const REQUEST_TIMEOUT = 10000;
 
 /**
  * Fontello helper
